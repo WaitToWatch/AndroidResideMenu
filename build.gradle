@@ -7,15 +7,16 @@ println "-------------------------------------------------\n"
 
 
 ext {
-    compileSdkVersion = 19
+    compileSdkVersion = 24
     buildToolsVersion = System.properties['buildToolsVersion']
     minSdkVersion = 9
-    targetSdkVersion = 14
+    targetSdkVersion = 24
 }
 
 buildscript {
     repositories {
-        mavenCentral()
+//        mavenCentral()
+        jcenter()
     }
 
     dependencies {
