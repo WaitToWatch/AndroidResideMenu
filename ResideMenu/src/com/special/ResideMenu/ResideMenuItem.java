@@ -12,6 +12,7 @@ import com.special.ResideMenu.R;
  * Date: 13-12-10
  * Time: 下午11:05
  * Mail: specialcyci@gmail.com
+ * 应该设置为可以重写的形式
  */
 public class ResideMenuItem extends LinearLayout{
 

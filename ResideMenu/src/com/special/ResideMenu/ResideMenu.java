@@ -60,8 +60,8 @@ public class ResideMenu extends FrameLayout {
      * Views which need stop to intercept touch events.
      */
     private List<View> ignoredViews;
-    private List<ResideMenuItem> leftMenuItems;
-    private List<ResideMenuItem> rightMenuItems;
+    private List<LinearLayout> leftMenuItems;
+    private List<LinearLayout> rightMenuItems;
     private DisplayMetrics displayMetrics = new DisplayMetrics();
     private OnMenuListener menuListener;
     private float lastRawX;
@@ -148,7 +148,9 @@ public class ResideMenu extends FrameLayout {
         boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
         boolean hasHomeKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_HOME);
         if (!hasBackKey || !hasHomeKey) {//there's a navigation bar
-            bottomPadding += getNavigationBarHeight();
+            //TODO 对navBar的设置需要针对特定的系统加以设置
+            if (!Build.BRAND.equals("HUAWEI") && Build.MANUFACTURER.equals("HUAWEI"))
+                bottomPadding += getNavigationBarHeight();
         }
 
         this.setPadding(viewActivity.getPaddingLeft() + insets.left,
@@ -181,8 +183,8 @@ public class ResideMenu extends FrameLayout {
 
     private void initValue(Activity activity) {
         this.activity = activity;
-        leftMenuItems = new ArrayList<ResideMenuItem>();
-        rightMenuItems = new ArrayList<ResideMenuItem>();
+        leftMenuItems = new ArrayList<LinearLayout>();
+        rightMenuItems = new ArrayList<LinearLayout>();
         ignoredViews = new ArrayList<View>();
         viewDecor = (ViewGroup) activity.getWindow().getDecorView();
         viewActivity = new TouchDisableView(this.activity);
@@ -237,7 +239,7 @@ public class ResideMenu extends FrameLayout {
      * @param menuItem
      */
     @Deprecated
-    public void addMenuItem(ResideMenuItem menuItem) {
+    public void addMenuItem(LinearLayout menuItem) {
         this.leftMenuItems.add(menuItem);
         layoutLeftMenu.addView(menuItem);
     }
@@ -248,7 +250,7 @@ public class ResideMenu extends FrameLayout {
      * @param menuItem
      * @param direction
      */
-    public void addMenuItem(ResideMenuItem menuItem, int direction) {
+    public void addMenuItem(LinearLayout menuItem, int direction) {
         if (direction == DIRECTION_LEFT) {
             this.leftMenuItems.add(menuItem);
             layoutLeftMenu.addView(menuItem);
@@ -264,7 +266,7 @@ public class ResideMenu extends FrameLayout {
      * @param menuItems
      */
     @Deprecated
-    public void setMenuItems(List<ResideMenuItem> menuItems) {
+    public void setMenuItems(List<LinearLayout> menuItems) {
         this.leftMenuItems = menuItems;
         rebuildMenu();
     }
@@ -275,7 +277,7 @@ public class ResideMenu extends FrameLayout {
      * @param menuItems
      * @param direction
      */
-    public void setMenuItems(List<ResideMenuItem> menuItems, int direction) {
+    public void setMenuItems(List<LinearLayout> menuItems, int direction) {
         if (direction == DIRECTION_LEFT)
             this.leftMenuItems = menuItems;
         else
@@ -286,13 +288,13 @@ public class ResideMenu extends FrameLayout {
     private void rebuildMenu() {
         if (layoutLeftMenu != null) {
             layoutLeftMenu.removeAllViews();
-            for (ResideMenuItem leftMenuItem : leftMenuItems)
+            for (LinearLayout leftMenuItem : leftMenuItems)
                 layoutLeftMenu.addView(leftMenuItem);
         }
 
         if (layoutRightMenu != null) {
             layoutRightMenu.removeAllViews();
-            for (ResideMenuItem rightMenuItem : rightMenuItems)
+            for (LinearLayout rightMenuItem : rightMenuItems)
                 layoutRightMenu.addView(rightMenuItem);
         }
     }
@@ -303,7 +305,7 @@ public class ResideMenu extends FrameLayout {
      * @return
      */
     @Deprecated
-    public List<ResideMenuItem> getMenuItems() {
+    public List<LinearLayout> getMenuItems() {
         return leftMenuItems;
     }
 
@@ -312,7 +314,7 @@ public class ResideMenu extends FrameLayout {
      *
      * @return
      */
-    public List<ResideMenuItem> getMenuItems(int direction) {
+    public List<LinearLayout> getMenuItems(int direction) {
         if (direction == DIRECTION_LEFT)
             return leftMenuItems;
         else
